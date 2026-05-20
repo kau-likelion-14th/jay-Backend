@@ -33,15 +33,17 @@ public class SwaggerConfig {
 
         Server localServer = new Server()
                 .url("http://localhost:8080")
-                .description("Local Server");
+                .description("Lte Local Server");
 
-        // 나중에 배포 후에는 또 만들어서 아래 List 안에 넣어주기
+        Server httpServer = new Server()
+                .url("http://Lte-dev-env-2.eba-xaqgpxhu.ap-northeast-2.elasticbeanstalk.com")
+                .description("LTE HTTP Server");
 
         return new OpenAPI()
                 .info(apiInfo)
                 .addSecurityItem(securityRequirement)
                 .components(components)
-                .servers(List.of(localServer));
+                .servers(List.of(localServer, httpServer));
     }
 
     @Bean

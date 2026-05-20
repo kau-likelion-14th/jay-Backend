@@ -10,6 +10,9 @@
         <module name="likelion14th.lte.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="likelion14th.lte.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
