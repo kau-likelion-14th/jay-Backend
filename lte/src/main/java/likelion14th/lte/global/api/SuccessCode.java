@@ -1,5 +1,7 @@
 package likelion14th.lte.global.api;
 
+// 프로젝트에 쓸 응답들을 사전처럼 enum(상수 집합)으로 모아놓은 것
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

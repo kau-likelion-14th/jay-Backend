@@ -1,5 +1,6 @@
 package likelion14th.lte.global.api;
 
+// 컨트롤러의 응답이 클라이언트에게 가기 직전에 가로채서, 실제 HTTP 응답 헤더의 상태 코드를 세팅해주는 역할
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,14 +29,18 @@ public class GlobalSuccessHandler implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
-
+        // 1. 응답 바디가 ApiResponse 타입이고,
+        // 2. HTTP 응답 객체가 ServletServerHttpResponse 타입일 때
         if (body instanceof ApiResponse<?> apiResponse &&
                 response instanceof ServletServerHttpResponse servletResponse) {
+
+            // ApiResponse 객체 안에 저장된 HttpStatus가 존재한다면
             if (apiResponse.getHttpStatus() != null) {
+                // 실제 HTTP 응답 헤더의 상태 코드를 해당 HttpStatus로 덮어씌기
                 servletResponse.setStatusCode(apiResponse.getHttpStatus());
             }
         }
-
+        // 바디 데이터(JSON 내용) 자체는 건드리지 않고 그대로 반환
         return body;
     }
 }
