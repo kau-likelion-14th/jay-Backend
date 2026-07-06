@@ -11,13 +11,12 @@ import lombok.*;
 // 답변: PUBLIC으로 열어두면 new User()처럼 아무값도 없는 불완전한 객체를 외부에서 마음대로 생성할 수 있어서 위험하다.
 // 그렇다고 PRIVATE로 완전히 막으면 JPA가 DB에서 데이터를 꺼낼 때 내부적으로 기본 생성자를 사용하지 못 한다.
 // 그래서 JPA는 접근할 수 있으면서 외부에서의 임의 생성은 막을 수 있는 PROTECTED로 설정한다.
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "users")
-public class User extends BaseEntity{
-
+@Table(name = "users") // 예약어 회피할려고 이렇게 씀
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ??
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private  Long id;
 
     // [Q2. @Column(nullable = false) 어노테이션이 DB와 자바 코드 사이에서 하는 역할은 무엇인가요?]
     // 답변: @Column(nullable = false)는 두가지 역할을 한다. 첫번째로 DB레벨에서 해당 column에 NOT NULL
@@ -32,8 +31,14 @@ public class User extends BaseEntity{
     @Column(columnDefinition = "TEXT")
     private String introduction;
 
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
+
+    @Column(columnDefinition = "TEXT")
+    private String s3ImageKey;
+
     @Builder(access = AccessLevel.PUBLIC)
-    private User (String username, String introduction, String userTag){
+    private User (String username, String userTag, String introduction) {
         this.username = username;
         this.userTag = userTag;
         this.introduction = introduction;

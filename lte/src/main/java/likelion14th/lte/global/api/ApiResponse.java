@@ -1,5 +1,7 @@
 package likelion14th.lte.global.api;
 
+// 프로젝트 전체에서 프론트로 반환될 표준화된 응답(JSON) 포맷을 정의하는 껍데기 클래스
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -34,7 +36,7 @@ public class ApiResponse<T> { // API 응답
         );
     }
 
-    //실패
+    //실패 1 - 에러 메셎만 반환할 때 (데이터 없음)
     public static ApiResponse<Void> onFailure(BaseCode code) {
         return new ApiResponse<>(
                 false,
@@ -45,6 +47,7 @@ public class ApiResponse<T> { // API 응답
         );
     }
 
+    //실패 2 - 에러와 함께 상세 데이터를 반환할 때
     public static <T> ApiResponse<T> onFailure(BaseCode code, T data) {
         return new ApiResponse<>(
                 false,

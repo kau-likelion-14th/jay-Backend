@@ -20,11 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserProfileController {
     public final UserProfileService userProfileService;
 
-    // [Q9. Controller 내부에서 userRepository.findById()를 직접 호출해서 유저를 찾지 않고,
-    // 반드시 userProfileService를 호출하여 작업을 위임해야 하는 이유는 무엇인가요? (단일 책임 원칙 관점)]
-    // 답변: Controller가 Repository를 직접 호출하면 비즈니스 로직까지 Controller가 쌓여 단일 책임 원칙이 깨진다.
-    // Controller는 요청과 응답 처리만 담당하고, 비지니스 로직은 Service에 위임해야 각 계층이 하나의 책임만 가질 수 있다.
-
     @GetMapping
     @Operation(summary = "유저 프로필 조회", description = "유저아이디를 받아 유저 프로필을 반환하는 api")
     public ApiResponse<UserProfileResponse> getUserProfile(
