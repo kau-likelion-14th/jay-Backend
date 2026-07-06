@@ -2,12 +2,16 @@ package likelion14th.lte.user.entity;
 
 import jakarta.persistence.*;
 import likelion14th.lte.Entity.BaseEntity;
+import likelion14th.lte.follow.entity.Follow;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Table(name = "users") // 예약어 회피할려고 이렇게 씀
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ??
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +32,20 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String s3ImageKey;
 
+
+    @OneToMany(mappedBy = "toUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followers;
+
+    @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followings;
+
     @Builder(access = AccessLevel.PUBLIC)
     private User (String username, String userTag, String introduction) {
         this.username = username;
         this.userTag = userTag;
         this.introduction = introduction;
+        this.followers = new ArrayList<>();
+        this.followings = new ArrayList<>();
     }
 
     public void updateIntroduction(String introduction) {
