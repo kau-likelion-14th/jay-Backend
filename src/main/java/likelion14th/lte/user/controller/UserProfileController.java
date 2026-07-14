@@ -32,6 +32,13 @@ public class UserProfileController {
     @PostMapping
     @Operation(summary = "테스트 유저 생성", description = "이름, 한줄소개, 유저 태그")
     public ApiResponse<UserProfileResponse> createTestUserProfile(
+
+            // [Q10. 클라이언트가 보낸 JSON 텍스트 데이터가 어떻게 자바 객체인 CreateTestUserRequest로
+            // 변환 되는지 앞의 어노테이션과 연관 지어 설명해 보세요.]
+            // 답변: @PostMapping은 클라이언트의 HTTP POST 요청을 받아 알맞은 자바 메서드에 매핑한다.
+            // RequsetBody는 네트워크를 타고 들어온 JSON 텍스트를 스프링의 Jackson 라이브러리가 CreateTestUserRequest
+            // 자바 객체로 변환해준다.
+
             @RequestBody CreateTestUserRequest createTestUserRequest
     ){
         UserProfileResponse response = userProfileService.createTestUser(createTestUserRequest);
