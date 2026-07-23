@@ -3,6 +3,7 @@ package likelion14th.lte.user.entity;
 import jakarta.persistence.*;
 import likelion14th.lte.Entity.BaseEntity;
 import likelion14th.lte.follow.entity.Follow;
+import likelion14th.lte.statistic.entity.Statistic;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -48,6 +49,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followings;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistic_id")
+    private Statistic statistic;
+
     @Builder(access = AccessLevel.PUBLIC)
     private User (String username, String userTag, String introduction) {
         this.username = username;
@@ -55,6 +60,7 @@ public class User extends BaseEntity {
         this.introduction = introduction;
         this.followers = new ArrayList<>();
         this.followings = new ArrayList<>();
+        this.statistic = Statistic.create();
     }
 
     // [Q3. @Setter를 위 @Getter 처럼 사용하면 모든 맴버들에 setIntruduction() 같은 setter 메서드가 생성됩니다. 하지만 왜 @Setter를 쓰지않고 updateIntroduction() 이라는 명확한 메서드를 만든 객체지향적인 이유는 무엇인가요?]
