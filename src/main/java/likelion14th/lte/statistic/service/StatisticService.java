@@ -42,32 +42,36 @@ public class StatisticService {
     public void updateStatistic(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
-        Statistic statistic = user.getStatistic();
         LocalDate yesterday = LocalDate.now().minusDays(1);
+        updateStatistic(user, yesterday);
+    }
 
-        boolean success = todoDateRepository.existsByTodo_User_IdAndDateAndCompleted(userId, yesterday, true)
-                && !todoDateRepository.existsByTodo_User_IdAndDateAndCompleted(userId, yesterday, false);
+    private void updateStatistic(User user, LocalDate day) {
+        Long userId = user.getId();
+        Statistic statistic = user.getStatistic();
+
+        boolean success = todoDateRepository.existsByTodo_User_IdAndDateAndCompleted(userId, day, true)
+                && !todoDateRepository.existsByTodo_User_IdAndDateAndCompleted(userId, day, false);
 
         statistic.increaseStreakIfSuccess(success);
 
         if (success) {
             statistic.getStatWeeks().stream()
-                    .filter(w -> w.getWeek().toDayOfWeek() == yesterday.getDayOfWeek())
+                    .filter(w -> w.getWeek().toDayOfWeek() == day.getDayOfWeek())
                     .findFirst()
                     .ifPresent(StatWeek::increaseCount);
-
         }
 
-        LocalDate start = yesterday.minusDays(30);
-        long completedCount = todoDateRepository.countByTodo_User_IdAndDateBetweenAndCompleted(userId, start, yesterday, true);
-        long failedCount = todoDateRepository.countByTodo_User_IdAndDateBetweenAndCompleted(userId, start, yesterday, false);
+        LocalDate start = day.minusDays(30);
+        long completedCount = todoDateRepository.countByTodo_User_IdAndDateBetweenAndCompleted(userId, start, day, true);
+        long failedCount = todoDateRepository.countByTodo_User_IdAndDateBetweenAndCompleted(userId, start, day, false);
         long totalCount = completedCount + failedCount;
 
         int monthPercent;
         if (totalCount == 0) {
             monthPercent = 0;
         } else {
-            monthPercent = (int) (completedCount*100/ totalCount);
+            monthPercent = (int) (completedCount * 100 / totalCount);
         }
 
         statistic.updateMonthPercent(monthPercent);
@@ -77,17 +81,17 @@ public class StatisticService {
     public void updateAllStatistics() {
         int page = 0;
         Page<User> userPage;
+        LocalDate yesterday = LocalDate.now().minusDays(1);
 
         do {
             userPage = userRepository.findAll(PageRequest.of(page, 500));
-            for(User user : userPage.getContent()) {
-                this.updateStatistic(user.getId());
+            for (User user : userPage.getContent()) {
+                updateStatistic(user, yesterday);
             }
             entityManager.flush();
             entityManager.clear();
             page++;
         } while (userPage.hasNext());
     }
-
 
 }
