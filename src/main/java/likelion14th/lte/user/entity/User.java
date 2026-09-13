@@ -3,6 +3,7 @@ package likelion14th.lte.user.entity;
 import jakarta.persistence.*;
 import likelion14th.lte.Entity.BaseEntity;
 import likelion14th.lte.follow.entity.Follow;
+import likelion14th.lte.login.domain.RefreshToken;
 import likelion14th.lte.statistic.entity.Statistic;
 import likelion14th.lte.youtube.domain.SavedSong;
 import lombok.*;
@@ -43,6 +44,8 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String s3ImageKey;
 
+    @Column(unique = true)
+    private String providerId;
 
     @OneToMany(mappedBy = "toUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followers;
@@ -57,9 +60,13 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavedSong> savedSong;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private RefreshToken refreshToken;
+
     @Builder(access = AccessLevel.PUBLIC)
-    private User (String username, String userTag, String introduction) {
+    private User (String username, String providerId, String  userTag, String introduction) {
         this.username = username;
+        this.providerId = providerId;
         this.userTag = userTag;
         this.introduction = introduction;
         this.followers = new ArrayList<>();
