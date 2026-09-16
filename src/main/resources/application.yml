@@ -28,6 +28,14 @@ spring:
   config:
     activate:
       on-profile: local
+    import: optional:file:.env[.properties]
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+
   datasource:
     url: ${LOCAL_DB_URL}
     username: ${LOCAL_DB_USERNAME}
@@ -50,3 +58,14 @@ logging:
 youtube:
   api-key: ${YOUTUBE_API_KEY}
   api-base: https://www.googleapis.com/youtube/v3
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+    s3:
+      bucket: ${AWS_BUCKET}
+      path:
+        location: user/

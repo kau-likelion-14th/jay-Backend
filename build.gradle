@@ -68,6 +68,19 @@ dependencies {
 	//test
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//aws
+	implementation platform('software.amazon.awssdk:bom:2.25.60')
+	implementation 'software.amazon.awssdk:s3'
+	implementation "software.amazon.awssdk:auth"
+	implementation "software.amazon.awssdk:sts"
+
+	//이미지 검증 라이브러리
+	implementation 'org.apache.tika:tika-core:3.2.2'
+	implementation "net.coobird:thumbnailator:0.4.20"
+	implementation "com.twelvemonkeys.imageio:imageio-webp:3.10.1"
+	implementation "com.twelvemonkeys.imageio:imageio-core:3.10.1"
+
 }
 
 tasks.named('test') {
