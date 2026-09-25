@@ -75,13 +75,6 @@ dependencies {
 	implementation "software.amazon.awssdk:auth"
 	implementation "software.amazon.awssdk:sts"
 
-	//이미지 검증 라이브러리
-	implementation 'org.apache.tika:tika-core:3.2.2'
-	implementation "net.coobird:thumbnailator:0.4.20"
-	implementation "com.twelvemonkeys.imageio:imageio-webp:3.10.1"
-	implementation "com.twelvemonkeys.imageio:imageio-core:3.10.1"
-
-
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 }
 

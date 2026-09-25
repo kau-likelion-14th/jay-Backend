@@ -64,15 +64,22 @@ public class User extends BaseEntity {
     private RefreshToken refreshToken;
 
     @Builder(access = AccessLevel.PUBLIC)
-    private User (String username, String providerId, String  userTag, String introduction) {
+    private User (String username, String providerId, String  userTag, String introduction, String s3ImageKey, String profileImage) {
         this.username = username;
         this.providerId = providerId;
         this.userTag = userTag;
         this.introduction = introduction;
+        this.s3ImageKey = s3ImageKey;
+        this.profileImage = profileImage;
         this.followers = new ArrayList<>();
         this.followings = new ArrayList<>();
         this.statistic = Statistic.create();
         this.savedSong = new ArrayList<>();
+    }
+
+    public void fixUserProfile(String s3ImageUrl, String s3ImageKey) {
+        this.profileImage = s3ImageUrl;
+        this.s3ImageKey = s3ImageKey;
     }
 
     // [Q3. @Setter를 위 @Getter 처럼 사용하면 모든 맴버들에 setIntruduction() 같은 setter 메서드가 생성됩니다. 하지만 왜 @Setter를 쓰지않고 updateIntroduction() 이라는 명확한 메서드를 만든 객체지향적인 이유는 무엇인가요?]
