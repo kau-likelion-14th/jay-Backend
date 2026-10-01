@@ -22,7 +22,7 @@ jobs:
 
       - name: Create .env file from secret
         run: |
-          printf '%s' "${{ secrets.LTE_ENV }}" > .env
+          printf '%s' "${{ secrets.LET_ENV }}" > .env
           chmod 600 .env
 
       - name: Set up JDK 21
@@ -68,8 +68,8 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v20
         with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
           application_name: Lte-dev
           environment_name: Lte-dev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
